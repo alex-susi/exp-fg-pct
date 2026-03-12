@@ -1,9 +1,13 @@
 {
     "sortOrder": [
         {
+            "columnIndex": 4,
+            "ascending": false
+        },
+        {
             "columnIndex": 2,
             "ascending": true
         }
     ],
-    "path": "C:/Users/alexs/Desktop/Data Science Projects/exp-fg-pct/stan"
+    "path": "C:/Users/alexs/Desktop/Data Science Projects/exp-fg-pct"
 }
