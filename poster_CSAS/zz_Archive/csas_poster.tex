@@ -1,0 +1,603 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CSAS 2026 Poster — EPAA: A Two-Stage Approach to
+% Quantifying Scoring Talent in the NBA
+%
+% Based on the Jacobs Landscape Poster LaTeX Template
+% Version 1.0 (29/03/13)
+% License: CC BY-NC-SA 3.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+% PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[final]{beamer}
+
+\usepackage[scale=1.24]{beamerposter}
+
+\usetheme{confposter}
+
+\setbeamercolor{block title}{fg=ngreen,bg=white}
+\setbeamercolor{block body}{fg=black,bg=white}
+\setbeamercolor{block alerted title}{fg=white,bg=dblue!70}
+\setbeamercolor{block alerted body}{fg=black,bg=dblue!10}
+
+%-----------------------------------------------------------
+% Define the column widths and overall poster size
+% 3-column layout: sepwid = 0.024, onecolwid = 0.3, twocolwid = 0.624
+%-----------------------------------------------------------
+
+\newlength{\sepwid}
+\newlength{\onecolwid}
+\newlength{\twocolwid}
+\newlength{\threecolwid}
+
+\setlength{\paperwidth}{48in}
+\setlength{\paperheight}{50in}
+%\setlength{\paperheight}{36in}
+
+\setlength{\sepwid}{0.024\paperwidth}
+\setlength{\onecolwid}{0.3\paperwidth}
+\setlength{\twocolwid}{0.624\paperwidth}
+\setlength{\threecolwid}{0.948\paperwidth}
+\setlength{\topmargin}{-0.5in}
+
+%-----------------------------------------------------------
+
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{qrcode}  % For QR code generation
+
+%----------------------------------------------------------------------------------------
+% TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+% \title{A Two-Stage Approach to Quantifying Scoring Talent in the NBA}
+% 
+% \author{Alex Susi}
+% 
+% \institute{CSAS 2026 --- Poster \#20}
+
+%----------------------------------------------------------------------------------------
+\setbeamertemplate{headline}{}
+\newsavebox{\titlebox}
+\begin{document}
+
+\addtobeamertemplate{block end}{}{\vspace*{2ex}}
+\addtobeamertemplate{block alerted end}{}{\vspace*{2ex}}
+
+\setlength{\belowcaptionskip}{2ex}
+\setlength\belowdisplayshortskip{2ex}
+
+% \begin{frame}[t]
+% 
+% \begin{columns}[T]
+%   \begin{column}{0.15\paperwidth}
+%     \centering
+%     \includegraphics[height=0.4\linewidth]{gaTech.png}
+%   \end{column}
+%   \begin{column}{0.7\paperwidth}
+%     \centering
+%     {\Huge\textbf{A Two-Stage Approach to Quantifying NBA Scoring Talent}}\\[2ex]
+%     {\LARGE Alex Susi}\\[1ex]
+%     {\LARGE CSAS 2026 ---  Georgia Institute of Technology}
+%   \end{column}
+%   \begin{column}{0.15\paperwidth}
+%     \centering
+%     \includegraphics[height=0.4\linewidth]{ball.png}
+%   \end{column}
+% \end{columns}
+
+\begin{frame}[t]
+
+\savebox{\titlebox}{%
+  \begin{minipage}{0.7\paperwidth}
+    \centering
+    {\Huge\textbf{A Two-Stage Approach to Quantifying NBA Scoring Talent}}\\[2ex]
+    {\LARGE Alex Susi}\\[1ex]
+    {\LARGE CSAS 2026 --- Georgia Institute of Technology}
+  \end{minipage}%
+}
+
+\begin{columns}[T]
+  \begin{column}{0.15\paperwidth}
+    \centering
+    \includegraphics[height=\ht\titlebox]{gaTech.png}
+  \end{column}
+  \begin{column}{0.7\paperwidth}
+    \usebox{\titlebox}
+  \end{column}
+  \begin{column}{0.15\paperwidth}
+    \centering
+    \includegraphics[height=\ht\titlebox]{ball.png}
+  \end{column}
+\end{columns}
+\vspace{0.5cm}
+\begin{center}
+\color{dblue}\rule{0.95\paperwidth}{0.15cm}
+\end{center}
+\vspace{0.5cm}
+
+\begin{columns}[t]
+
+\begin{column}{\sepwid}\end{column}
+
+
+%========================================================================================
+% COLUMN 1
+%========================================================================================
+
+\begin{column}{\onecolwid}
+
+%----------------------------------------------------------------------------------------
+% INTRODUCTION
+%----------------------------------------------------------------------------------------
+
+\begin{alertblock}{Introduction}
+
+The ultimate objective of basektball is to score more points than the opponent. Consequentially, a fundamental challenge in basketball analytics is determining who the best scorers are. However, not all shot attempts are created equal. A wide-open dunk in transition, an open catch-and-shoot corner three-pointer, and a contested midrange stepback all have different expected conversion rates. Treating them identically conflates \textbf{shot quality} with \textbf{shooting skill}.
+
+\vspace{2ex}
+
+%\begin{center}
+%\begin{tabular}{cc}
+%\includegraphics[width=0.42\linewidth]{img_dunk.jpg} &
+%\includegraphics[width=0.42\linewidth]{img_contested3.jpg} \\
+%{\small Wide-open dunk} & {\small Contested deep three}
+%\end{tabular}
+%\end{center}
+
+%\vspace{0.5ex}
+
+Despite their importance for player evaluation, common public metrics such as FG\%, eFG\%, and even TS\% are heavily confounded by shot selection and defensive assignment. These are simple summaries of shooting outcomes that are much more context-dependent than implied by a single percentage.
+
+\vspace{2ex}
+
+We introduce \textbf{Expected Points Above Average (EPAA)}, a two-stage framework that:
+
+\begin{enumerate}
+\item Estimates \textit{shot quality} using contextual features.
+\item Estimates \textit{shooting talent} via Bayesian hierarchical modeling.
+\end{enumerate}
+
+\vspace{2ex}
+
+EPAA produces \textbf{league-adjusted metrics} for shooters, individual defenders, and team defense, such that 0 is league-average. This work uses public NBA tracking data from approximately 200,000 field goal attempts during the 2024–25 regular season, accessed via the \texttt{hoopR} R package.
+
+\end{alertblock}
+
+%----------------------------------------------------------------------------------------
+% DATA
+%----------------------------------------------------------------------------------------
+
+% \begin{block}{Data}
+% 
+% \textbf{Source:} NBA Stats API accessed via the \texttt{hoopR} R package.
+% 
+% \vspace{0.5ex}
+% 
+% \textbf{Coverage:} ${\sim}200{,}000$ field goal attempts from the 2024--25 NBA regular season.
+% 
+% \vspace{0.5ex}
+% 
+% \textbf{Feature engineering pipeline} (\texttt{01\_data\_pipeline.R}):
+% \begin{itemize}
+% \item Play-by-play data with lineup tracking and shot clock reconstruction
+% \item \textbf{Defender imputation:} Closest defender on each shot reconstructed from NBA matchup data, lineup tracking, and period-level co-occurrence weighting
+% \item Fatigue features (minutes in game and stint)
+% \item Shooting foul linkage for future True EPAA extension
+% \end{itemize}
+% 
+% \vspace{0.5ex}
+% 
+% Shots are partitioned into three \textbf{shot families}: \textit{rim} (dunks, layups, tip-ins), \textit{mid-range} (j2), and \textit{three-point} (j3). Separate models are fit for each family to capture fundamentally different shooting mechanics and defensive dynamics.
+% 
+% \end{block}
+
+%----------------------------------------------------------------------------------------
+% METHODOLOGY
+%----------------------------------------------------------------------------------------
+
+% \begin{block}{Methodology}
+% 
+% The EPAA framework uses a \textbf{two-stage pipeline} that cleanly separates \textit{what happened} from \textit{who did it}:
+% 
+% \vspace{1ex}
+% 
+% \begin{center}
+% \textbf{Stage 1: Shot Difficulty (XGBoost)} \\[0.5ex]
+% Context-only features $\xrightarrow{\hspace{1cm}}$ Expected FG\% (xFG) \\[0.3ex]
+% {\small\textit{``How hard was this shot for a league-average player?''}}
+% \end{center}
+% 
+% \vspace{0.5ex}
+% $\Downarrow$ \hfill {\small xFG passed as input to Stage 2}
+% 
+% \vspace{0.5ex}
+% 
+% \begin{center}
+% \textbf{Stage 2: Talent Estimation (Bayesian Stan)} \\[0.5ex]
+% xFG + make/miss $\xrightarrow{\hspace{1cm}}$ Player \& defender skill \\[0.3ex]
+% {\small\textit{``Who is good, after controlling for shot difficulty?''}}
+% \end{center}
+% 
+% \vspace{1ex}
+% 
+% \textbf{Key design principle:} Player and defender \textit{identity} is intentionally excluded from Stage 1. XGBoost sees only the shot situation (distance, angle, defender proximity, shot clock, etc.). This ensures Stage 2 random effects capture genuine skill, not confounded context.
+% 
+% \end{block}
+
+
+%----------------------------------------------------------------------------------------
+
+
+
+%----------------------------------------------------------------------------------------
+% METHODOLOGY
+%----------------------------------------------------------------------------------------
+
+\begin{block}{Methodology}
+
+\textbf{Stage 1: Shot Quality} \\[0.5ex]
+\begin{itemize}
+\item Expected Field Goal Percentage (xFG) is estimated using three separate XGBoost classifiers (one per shot type: rim, mid-range, three-point), trained on context features: shot distance, shot angle, defender proximity, dribble count, shot clock, player fatigue, and play type indicators.
+\item Player and defender identities are intentionally excluded in these models, so they describe: \textit{"How hard was this shot for a league-average player guarded by a league-average defender?"}
+\end{itemize}
+
+\vspace{2ex}
+
+\textbf{Stage 2: Shooting Talent} \\[0.5ex]
+\begin{itemize}
+\item Residual variation of shot difficulty is modeled using a Bayesian hierarchical model in Stan with random effects for shooters, individual defenders, and defensive teams.
+\item Partial pooling shrinks low-volume players toward the league mean while preserving separation for high-volume stars, producing skill parameters with uncertainty quantification rather than simple point estimates.
+\end{itemize}
+
+
+
+
+\end{block}
+
+
+
+
+
+
+
+
+%----------------------------------------------------------------------------------------
+
+\end{column}
+
+\begin{column}{\sepwid}\end{column}
+
+%========================================================================================
+% COLUMN 2
+%========================================================================================
+
+\begin{column}{\onecolwid}
+
+%----------------------------------------------------------------------------------------
+% SHOT QUALITY MODELS (STAGE 1)
+%----------------------------------------------------------------------------------------
+
+\begin{block}{Stage 1 Results: Shot Quality Models}
+
+% Three separate XGBoost classifiers are trained on \textbf{context-only features} with an 85/15 temporal train/test split:
+% 
+% \vspace{0.5ex}
+% 
+% \begin{table}
+% \begin{tabular}{l l}
+% \toprule
+% \textbf{Feature} & \textbf{Description} \\
+% \midrule
+% \texttt{shot\_distance} & Feet from basket \\
+% \texttt{shot\_angle} & Degrees from baseline center \\
+% \texttt{defender\_dist\_level} & Categorical closeness of defender \\
+% \texttt{dribble\_level} & Number of dribbles before shot \\
+% \texttt{shot\_clock} & Seconds remaining on shot clock \\
+% \texttt{player\_min\_game/stint} & Fatigue proxies \\
+% \texttt{is\_dunk} & Dunk indicator (rim only) \\
+% \texttt{is\_fastbreak, is\_2ndchance} & Play-type indicators \\
+% \bottomrule
+% \end{tabular}
+% \end{table}
+% 
+% \vspace{0.5ex}
+
+Feature importance varies substantially across shot families, as revealed by SHAP analysis. This validated the decision to fit separate models per shot type rather than a single pooled classifier.
+
+\vspace{0.5ex}
+
+\begin{figure}
+\includegraphics[width=\linewidth]{shap_rim.png}
+\caption{Rim: Dunks and defender distance dominate}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=\linewidth]{shap_j2.png}
+\caption{Mid-range: Defender distance is the primary driver}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=\linewidth]{shap_j3.png}
+\caption{Three-point: Shot angle and distance most important}
+\end{figure}
+
+\end{block}
+
+%----------------------------------------------------------------------------------------
+
+\end{column}
+
+\begin{column}{\sepwid}\end{column}
+
+%========================================================================================
+% COLUMN 3
+%========================================================================================
+
+\begin{column}{\onecolwid}
+
+%----------------------------------------------------------------------------------------
+% EPAA MODEL (STAGE 2)
+%----------------------------------------------------------------------------------------
+
+% \begin{block}{Stage 2: EPAA Bayesian Hierarchical Model}
+% 
+% {\small
+% \textbf{Likelihood:}
+% \begin{aligned}
+%   y_n &\sim \mathrm{Bernoulli}\!\bigl(\mathrm{logit}^{-1}(\eta_n)\bigr),
+%     \quad n = 1, \dots, N 
+% \end{aligned}
+% 
+% \textbf{Linear predictor:}
+% \begin{aligned}
+%   \eta_n &= \underbrace{\alpha_{t_n}
+%     + \beta_{t_n} \cdot \mathrm{xfg\_logit}_n
+%     }_{\text{calibrated Stage 1}}
+%     + \underbrace{a^{\mathrm{player}}_{j[n],\,t_n}
+%     }_{\text{shooter skill}}
+%     + \underbrace{a^{\mathrm{def}}_{d[n],\,t_n}
+%     }_{\text{indiv.\ defender}}
+%     + \underbrace{a^{\mathrm{team}}_{k[n],\,t_n}
+%     }_{\text{def.\ scheme}} 
+% \end{aligned}
+% 
+% \textbf{Random effects} (non-centered parameterization):
+% \begin{aligned}
+%   a^{\mathrm{player}}_{j,t} &= \mu^{\mathrm{vol}}_t
+%     \cdot x^{\mathrm{vol}}_{j,t}
+%     + \sigma^{\mathrm{player}}_t \cdot z^{\mathrm{player}}_{j,t},
+%     &z^{\mathrm{player}}_{j,t}
+%     &\sim \mathcal{N}(0, 1)  \\[4pt]
+%   a^{\mathrm{def}}_{d,t}
+%     &= \sigma^{\mathrm{def}}_t
+%     \cdot z^{\mathrm{def}}_{d,t},
+%     &z^{\mathrm{def}}_{d,t}
+%     &\sim \mathcal{N}(0, 1)  \\[4pt]
+%   a^{\mathrm{team}}_{k,t}
+%     &= \sigma^{\mathrm{team}}_t
+%     \cdot z^{\mathrm{team}}_{k,t},
+%     &z^{\mathrm{team}}_{k,t}
+%     &\sim \mathcal{N}(0, 1) 
+% \end{aligned}
+% 
+% \textbf{Priors:}
+% \begin{aligned}
+%   \alpha_t &\sim \mathcal{N}(0,\; 0.25^2)  \\
+%   \beta_t  &\sim \mathcal{N}^{+}(1,\; 0.25^2)  \\[4pt]
+%   \mu^{\mathrm{vol}}_t &\sim \mathcal{N}(0,\; 0.3^2)  \\[4pt]
+%   \sigma^{\mathrm{player}}_t
+%     &\sim \mathcal{N}^{+}\!\bigl(0,\; s^{\mathrm{player}}_t\bigr),
+%     \quad s^{\mathrm{player}}
+%     = (0.30,\; 0.30,\; 0.25)  \\
+%   \sigma^{\mathrm{def}}_t
+%     &\sim \mathcal{N}^{+}(0,\; 0.20)
+%     \quad \forall\; t  \\
+%   \sigma^{\mathrm{team}}_t
+%     &\sim \mathcal{N}^{+}\!\bigl(0,\; s^{\mathrm{team}}_t\bigr),
+%     \quad s^{\mathrm{team}}
+%     = (0.12,\; 0.10,\; 0.06) 
+% \end{aligned}
+% }
+% 
+% \vspace{0.3ex}
+% 
+% {\small Shot family index $t \in \{1, 2, 3\}$ for rim, mid-range, and three-point. Family-specific prior scales encode basketball structure: defensive team scheme effects are largest at the rim and smallest on threes. The model uses \texttt{reduce\_sum} parallelization for efficient MCMC sampling in Stan.}
+% 
+% \end{block}
+
+
+
+%----------------------------------------------------------------------------------------
+% EPAA MODEL (STAGE 2)
+%----------------------------------------------------------------------------------------
+
+\begin{block}{Stage 2: EPAA Bayesian Hierarchical Model}
+
+For each shot attempt $n = 1, \dots, N$, let:
+\[
+\begin{aligned}
+  y_n &\in \{0,1\} & &\text{shot outcome (make/miss)} \\
+  t_n &\in \{1,2,3\} & &\text{shot type (rim, mid-range, three-point)}
+\end{aligned}
+\]
+
+\vspace{1ex}
+
+\textbf{Likelihood and Linear Predictor}
+\[
+\begin{aligned}
+  y_n \sim \mathrm{Bernoulli}\!\bigl(\mathrm{logit}^{-1}(\eta_n)\bigr) \\
+  \eta_n = \underbrace{\alpha_{t_n}
+    + \beta_{t_n} \cdot \mathrm{xfg\_logit}_n
+    }_{\text{Stage\,1 prediction}}
+    + \underbrace{a^{\mathrm{p}}_{j[n],\,t_n}
+    }_{\text{shooter skill}}
+    + \underbrace{a^{\mathrm{f}}_{d[n],\,t_n}
+    }_{\substack{\text{individual} \\ \text{defender}}}
+    + \underbrace{a^{\mathrm{m}}_{k[n],\,t_n}
+    }_{\substack{\text{team} \\ \text{defense}}}
+\end{aligned}
+\]
+
+The intercept $\alpha_t$ and slope $\beta_t$ recalibrate the Stage~1 output per shot type. Three sets of \textbf{random effects} decompose residual skill.
+
+\vspace{1ex}
+
+\textbf{Random Effects}
+\[
+\begin{aligned}
+  a^{\mathrm{p}}_{j,t} &= \mu^{\mathrm{vol}}_t
+    \cdot x^{\mathrm{vol}}_{j,t}
+    + \sigma^{\mathrm{p}}_t \cdot z^{\mathrm{p}}_{j,t},
+    &z^{\mathrm{p}}_{j,t}
+    &\sim \mathcal{N}(0,\, 1) \text{ for all players } j = 1,\dots,J \\[4pt]
+  a^{\mathrm{f}}_{d,t}
+    &= \sigma^{\mathrm{f}}_t
+    \cdot z^{\mathrm{f}}_{d,t},
+    &z^{\mathrm{f}}_{d,t}
+    &\sim \mathcal{N}(0,\, 1) \text{ for all defenders } d = 1,\dots,D  \\[4pt]
+  a^{\mathrm{m}}_{k,t}
+    &= \sigma^{\mathrm{m}}_t
+    \cdot z^{\mathrm{m}}_{k,t},
+    &z^{\mathrm{m}}_{k,t}
+    &\sim \mathcal{N}(0,\, 1) \text{ for all teams } k = 1,\dots,K 
+\end{aligned}
+\]
+
+where $x^{\mathrm{vol}}_{j,t}$ is standardized $\log(1 + \text{FGA per 36\,min})$ for player $j$ in shot type $t$.
+
+\vspace{1ex}
+
+\textbf{Priors}
+\[
+\begin{aligned}
+  \alpha_t &\sim \mathcal{N}(0,\; 0.25^2)
+    & \beta_t  &\sim \mathcal{N}^{+}(1,\; 0.25^2) \\[4pt]
+  \mu^{\mathrm{vol}}_t &\sim \mathcal{N}(0,\; 0.3^2) \\[4pt]
+  \sigma^{\mathrm{p}}_t
+    &\sim \mathcal{N}^{+}\!\bigl(0,\; s^{\mathrm{p}}_t\bigr),
+    &s^{\mathrm{p}}
+    &= (0.30,\; 0.30,\; 0.25) \\
+  \sigma^{\mathrm{f}}_t
+    % &\sim \mathcal{N}^{+}(0,\; 0.20) \;\; \forall\, t \\
+    &\sim \mathcal{N}^{+}\!\bigl(0,\; s^{\mathrm{p}}_t\bigr),
+    &s^{\mathrm{p}}
+    &= (0.20,\; 0.20,\; 0.20) \\
+  \sigma^{\mathrm{m}}_t
+    &\sim \mathcal{N}^{+}\!\bigl(0,\; s^{\mathrm{m}}_t\bigr),
+    &s^{\mathrm{m}}
+    &= (0.12,\; 0.10,\; 0.06)
+\end{aligned}
+\]
+
+% {\small Family-specific prior scales encode basketball domain knowledge: $s^{\mathrm{player}}$ and $s^{\mathrm{team}}$ vary by shot family because defensive scheme effects are largest at the rim and smallest on threes, while individual defender impact ($\sigma^{\mathrm{def}}_t$) uses a common scale across all families. The half-normal $\mathcal{N}^{+}$ constrains variance parameters to be positive. The slope prior $\beta_t \sim \mathcal{N}^{+}(1, 0.25^2)$ is centered at the identity transform, encoding the belief that a better Stage~1 prediction should correspond to a higher make probability.}
+
+\end{block}
+
+%----------------------------------------------------------------------------------------
+% RESULTS
+%----------------------------------------------------------------------------------------
+
+\begin{block}{Results}
+
+\textbf{Player rankings} with 90\% credible intervals (caterpillar plots):
+
+\begin{figure}
+\includegraphics[width=\linewidth]{player_caterpillar.png}
+\caption{EPAA player effects by shot type with 90\% posterior intervals. Partial pooling shrinks low-volume players toward zero while preserving separation for high-volume stars.}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=\linewidth]{defender_caterpillar.png}
+\caption{ESAA defender effects by shot type with 90\% posterior intervals. Rim defense has greater variation than midrange and 3-pointers across players.}
+\end{figure}
+
+\textbf{Key findings:}
+\begin{itemize}
+\item EPAA re-ranks players substantially compared to raw eFG\%, rewarding efficient shooting on difficult looks and penalizing inflated stats from easy opportunities
+\item Defender rankings reveal individual rim protection skill beyond team scheme effects
+\item Volume--skill relationship is family-specific: jump shot volume correlates positively with skill (selection effect), while rim volume reflects role assignment rather than finishing talent
+\end{itemize}
+
+\end{block}
+
+%----------------------------------------------------------------------------------------
+% CONCLUSION / FUTURE WORK / CODE
+%----------------------------------------------------------------------------------------
+
+\begin{block}{Conclusion \& Future Work}
+
+EPAA demonstrates that a two-stage framework---machine learning for context, Bayesian hierarchical modeling for talent---can \textbf{separate shot difficulty from shooting skill} with principled uncertainty quantification. The crossed random effects structure (shooter $\times$ defender $\times$ team) is a novel contribution to basketball analytics.
+
+\vspace{0.5ex}
+
+\textbf{Limitations \& future directions:}
+\begin{itemize}
+\item Posterior predictive intervals are slightly overconfident at high volumes; a game-level random intercept or beta-binomial likelihood is the principled fix
+\item Split-half validation (first half $\to$ second half prediction) is underway as the headline stability metric
+\item \textbf{True EPAA} extension: incorporating foul-drawing value via a two-tier architecture (foul probability + ``phantom shot'' modeling)
+\end{itemize}
+
+\end{block}
+
+%----------------------------------------------------------------------------------------
+
+\setbeamercolor{block alerted title}{fg=black,bg=norange}
+\setbeamercolor{block alerted body}{fg=black,bg=white}
+
+\begin{alertblock}{Code \& Reproducibility}
+
+Full pipeline available on GitHub. Scan the QR code or visit:
+
+\vspace{0.5ex}
+
+\begin{center}
+% Replace URL with your actual GitHub repo link
+\qrcode[height=1.5in]{https://github.com/alex-susi/exp-fg-pct}
+
+\vspace{0.3ex}
+{\small \texttt{github.com/alex-susi/exp-fg-pct}}
+\end{center}
+
+\vspace{0.5ex}
+
+{\small
+\textbf{Pipeline:} R + Stan (\texttt{cmdstanr}) \\
+\textbf{Scripts:} \texttt{01\_data\_pipeline.R} $\to$ \texttt{02\_xgb\_shot\_difficulty.R} $\to$ \texttt{03\_stan\_random\_effects.R} \\
+\textbf{Data:} NBA Stats API via \texttt{hoopR}
+}
+
+\end{alertblock}
+
+%----------------------------------------------------------------------------------------
+% REFERENCES
+%----------------------------------------------------------------------------------------
+
+% \begin{block}{References}
+% 
+% {\small
+% \begin{enumerate}
+% \item Gelman, A., et al. (2013). \textit{Bayesian Data Analysis}, 3rd ed. CRC Press.
+% \item Osborn, C. (2024). Probabilistic modeling of true hitting talent in MLB. \textit{CSAS}.
+% \item Franks, A., et al. (2015). Characterizing the spatial structure of defensive skill in professional basketball. \textit{Annals of Applied Statistics}, 9(1), 94--121.
+% \item Cervone, D., et al. (2016). A multiresolution stochastic process model for predicting basketball possession outcomes. \textit{JASA}, 111(514), 585--599.
+% \end{enumerate}
+% }
+% 
+% \end{block}
+
+%----------------------------------------------------------------------------------------
+
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+\end{document}
