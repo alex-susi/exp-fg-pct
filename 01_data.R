@@ -3842,8 +3842,8 @@ assemble_and_scale <- function(pbp, schedule, bio, game_tracking, seed = 42) {
 
 build_season_pbp <- function(season_year, 
                              game_ids  = NULL, 
-                             output_dir = "output",
-                             cache_dir  = "cache") {
+                             output_dir = "01_data",
+                             cache_dir  = "01_data/cache") {
 
   season_str <- year_to_season(season_year)
 
@@ -3994,7 +3994,7 @@ build_season_pbp <- function(season_year,
 
 build_season_pbp_inChunks <- function(season_year, 
                                       chunk_size  = 5,
-                                      output_dir  = "output", 
+                                      output_dir  = "01_data", 
                                       overwrite   = FALSE,
                                       ...) {
 
@@ -4082,7 +4082,7 @@ build_multi_season_pbp <- function(season_years,
                                    existing_player_map  = NULL,
                                    existing_defteam_map = NULL,
                                    chunk_dirs           = NULL,
-                                   output_dir           = "output",
+                                   output_dir           = "01_data",
                                    ...) {
 
   dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
@@ -4263,7 +4263,7 @@ get_lt10_tracking(schedule_24, "2024-25")
 
 # Step 1: identify the missing game_ids
 schedule_24 <- get_schedule(2024)
-pbp_all <- read_csv("pbp_2024_2025/pbp_2024_2025_FULL.csv") %>% 
+pbp_all <- read_csv("01_data/pbp_2024_2025/pbp_2024_2025_FULL.csv") %>% 
   rename(xLoc = x_legacy,
          yLoc = y_legacy,
          event_team_id = team_id,

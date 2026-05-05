@@ -305,7 +305,7 @@ player_volume <- shots %>%
 ## Convert logit-scale effect to percentage-point impact using derivative
 ## of inv_logit at the shot type's league-average FG%:
 ##   d(inv_logit)/dx ≈ p * (1 - p)
-player_tbl <- player_effects %>%
+player_effects <- player_effects %>%
   left_join(player_volume, by = c("idx" = "player_idx", "shot_family")) %>%
   mutate(baseline_p = case_when(shot_family == "rim" ~ 0.65,
                                 shot_family == "j2"  ~ 0.43,
@@ -317,7 +317,7 @@ player_tbl <- player_effects %>%
 # Top shooters by family
 for (fam in c("rim", "j2", "j3")) {
   cat("\n═══ Top 15 PLAYERS:", toupper(fam), "(by posterior mean) ═══\n")
-  player_tbl %>%
+  player_effects %>%
     filter(shot_family == fam) %>%
     arrange(desc(effect_mean)) %>%
     select(player_name_full, fga, fg_pct, mean_xfg, effect_mean, effect_pp,
@@ -445,7 +445,7 @@ epaa_per100_ci  <- bind_rows(lapply(1:3, function(t) {
          epaa100_q95  = apply(epaa_draws, 2, quantile, 0.95))
 }))
 
-player_tbl <- player_tbl %>%
+player_effects <- player_effects %>%
   left_join(epaa_per100_ci , by = c("idx", "shot_family"))
 
 
@@ -463,7 +463,7 @@ defender_volume <- shots %>%
             opp_xfg = mean(xfg), 
             .groups = "drop")
 
-defender_tbl <- defender_effects %>%
+defender_effects <- defender_effects %>%
   left_join(defender_volume, by = c("idx" = "defender_idx", "shot_family")) %>%
   filter(!is.na(contests))
 
@@ -472,7 +472,7 @@ defender_tbl <- defender_effects %>%
 for (fam in c("rim", "j2", "j3")) {
   cat("\n═══ TOP 15 DEFENDERS:", toupper(fam),
       "(min 100 contested, negative = better) ═══\n")
-  defender_tbl %>%
+  defender_effects %>%
     filter(shot_family == fam) %>%
     arrange(effect_mean) %>%
     select(defender_name, contests, opp_fg, opp_xfg, effect_mean,
@@ -482,7 +482,7 @@ for (fam in c("rim", "j2", "j3")) {
     print()
 }
 
-defender_tbl %>%
+defender_effects %>%
   filter(shot_family == "rim", contests >= 100) %>%
   #arrange(effect_mean) %>%
   arrange((opp_xfg)) %>%
@@ -517,7 +517,7 @@ psaa_per100_ci <- bind_rows(lapply(1:3, function(t) {
          psaa100_q95  = apply(psaa_draws, 2, quantile, 0.95))
 }))
 
-defender_tbl <- defender_tbl %>%
+defender_effects <- defender_effects %>%
   left_join(psaa_per100_ci, by = c("idx", "shot_family"))
 
 
@@ -532,14 +532,14 @@ defteam_volume <- shots %>%
   group_by(defteam_idx, shot_family) %>%
   summarise(fga_against = n(), opp_fg = mean(fgm), .groups = "drop")
 
-defteam_tbl <- defteam_effects %>%
+defteam_effects <- defteam_effects %>%
   left_join(defteam_volume, by = c("idx" = "defteam_idx", "shot_family")) %>%
   filter(!is.na(fga_against))
 
 for (fam in c("rim", "j2", "j3")) {
   cat("\n═══ DEFENSIVE TEAM EFFECTS:", toupper(fam),
       "(negative = better defense) ═══\n")
-  defteam_tbl %>%
+  defteam_effects %>%
     filter(shot_family == fam) %>%
     arrange(effect_mean) %>%
     select(defender_team, fga_against, opp_fg, effect_mean,
@@ -633,15 +633,15 @@ caterpillar_plot <- function(df, family, name_col, n_col,
 
 
 ## Player EPAA per 100 shots
-p_cat_rim <- caterpillar_plot(player_tbl, "rim", "player_name_full", "fga",
+p_cat_rim <- caterpillar_plot(player_effects, "rim", "player_name_full", "fga",
                               "epaa100_mean", "epaa100_q05", "epaa100_q95",
                               title_suffix = "",
                               y_lab = "EPAA per 100 shots (90% CI)")
-p_cat_j2  <- caterpillar_plot(player_tbl, "j2", "player_name_full", "fga",
+p_cat_j2  <- caterpillar_plot(player_effects, "j2", "player_name_full", "fga",
                               "epaa100_mean", "epaa100_q05", "epaa100_q95",
                               title_suffix = "",
                               y_lab = "EPAA per 100 shots (90% CI)")
-p_cat_j3  <- caterpillar_plot(player_tbl, "j3", "player_name_full", "fga",
+p_cat_j3  <- caterpillar_plot(player_effects, "j3", "player_name_full", "fga",
                               "epaa100_mean", "epaa100_q05", "epaa100_q95",
                               title_suffix = "",
                               y_lab = "EPAA per 100 shots (90% CI)")
@@ -659,15 +659,15 @@ ggsave("poster_CSAS/player_caterpillar.png",
 
 
 ## Defender PSAA per 100 contests
-def_cat_rim <- caterpillar_plot(defender_tbl, "rim", "defender_name", "contests",
+def_cat_rim <- caterpillar_plot(defender_effects, "rim", "defender_name", "contests",
                                 "psaa100_mean", "psaa100_q05", "psaa100_q95",
                                 title_suffix = "",
                                 y_lab = "Points saved per 100 contests (90% CI)")
-def_cat_j2  <- caterpillar_plot(defender_tbl, "j2", "defender_name", "contests",
+def_cat_j2  <- caterpillar_plot(defender_effects, "j2", "defender_name", "contests",
                                 "psaa100_mean", "psaa100_q05", "psaa100_q95",
                                 title_suffix = "",
                                 y_lab = "Points saved per 100 contests (90% CI)")
-def_cat_j3  <- caterpillar_plot(defender_tbl, "j3", "defender_name", "contests",
+def_cat_j3  <- caterpillar_plot(defender_effects, "j3", "defender_name", "contests",
                                 "psaa100_mean", "psaa100_q05", "psaa100_q95",
                                 title_suffix = "",
                                 y_lab = "Points saved per 100 contests (90% CI)")
@@ -799,25 +799,26 @@ write_csv(shots %>%
 
 write_csv(epaa_tbl,     "epaa_by_family.csv")
 write_csv(epaa_overall, "epaa_overall.csv")
-write_csv(player_tbl %>%
+write_csv(player_effects %>%
             select(player_name_full, shot_family, fga, fg_pct, mean_xfg,
                    effect_mean, effect_pp, effect_q05, effect_q95, prob_above, 
                    epaa100_mean, epaa100_q05, epaa100_q95),
           "player_effects.csv")
-write_csv(defender_tbl %>%
+write_csv(defender_effects %>%
             select(imputed_def_name, shot_family, contests, opp_fg,
                    effect_mean, effect_q05, effect_q95, prob_below),
           "defender_effects.csv")
-write_csv(defteam_tbl %>%
+write_csv(defteam_effects %>%
             select(defender_team, shot_family, fga_against, opp_fg,
                    effect_mean, effect_q05, effect_q95),
           "defteam_effects.csv")
 
 ## Save Stan fit object and draws matrix.
 saveRDS(fit_nba, "stan_fit_nba.rds")
-saveRDS(draws_mat, "draws_v3_twostage.rds")
+saveRDS(draws_mat, "03_app/draws_mat.rds")
 
 # Save mapping tables
-write_csv(player_map,   "player_map_v3.csv")
-write_csv(defender_map, "defender_map_v3.csv")
-write_csv(defteam_map,  "defteam_map_v3.csv")
+write_csv(player_map,   "03_app/player_map.csv")
+write_csv(defender_map, "03_app/defender_map.csv")
+write_csv(defteam_map,  "03_app/defteam_map.csv")
+write_csv(shots,  "shots.csv")
