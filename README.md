@@ -6,7 +6,9 @@ Standard shooting stats like FG% treat every shot the same — a wide-open dunk 
 
 This project produces context-adjusted estimates of shooter skill, individual defender impact, and team defensive scheme quality, each with full uncertainty quantification.
 
-> Presented at [CSAS 2026](https://statds.org/events/csas2026/index.html)
+> [Interactive Dashboard](https://alexsusi2298.shinyapps.io/exp-fg-pct/) to analyze shot quality based on model parameters.
+
+> Poster Awardee at [CSAS 2026](https://statds.org/events/csas2026/index.html)
 ---
 
 ## Methodology
