@@ -4,7 +4,7 @@
 
 Standard shooting stats like FG% treat every shot the same — a wide-open dunk counts no differently than a contested fadeaway three. EPAA addresses this by first estimating how hard each shot was, then measuring who consistently beats (or falls short of) that difficulty baseline.
 
-This project produces context-adjusted estimates of shooter skill, individual defender impact, and team defensive scheme quality, each with full uncertainty quantification.
+This project produces context-adjusted estimates of shooter skill, individual defender impact, and team defensive scheme quality, each with full uncertainty quantification. Play-by-play data from the 2024-2025 NBA regular season was scraped using the `hoopR` package.
 
 > [Interactive Dashboard](https://alexsusi2298.shinyapps.io/exp-fg-pct/) to analyze shot quality based on model parameters.
 
@@ -15,18 +15,18 @@ This project produces context-adjusted estimates of shooter skill, individual de
 
 ### Shot Quality
 
-An XGBoost model estimates the probability that a league-average player would make each shot, based purely on context: distance, angle, defender proximity, shot clock, dribbles taken before the shot, and more.
+An XGBoost model estimates the probability that a league-average player would make each shot, based purely on context at the time of the shot, including distance, angle, defender proximity, shot clock, and dribbles taken before the shot.
 
 Crucially, the model never sees *who* is shooting or defending. This keeps the difficulty estimate free of player identity so that talent can be measured separately.
 
-Three separate models are trained, one each for **rim attempts**, **mid-range jumpers**, and **three-pointers**. The features that make a shot difficult are fundamentally different across these shot types.
+Three separate models are trained, one each for **rim attempts**, **mid-range jumpers**, and **three-pointers**. The features that make a shot difficult are different across each shot type.
 
 ### Shooting Talent
 
-A Bayesian hierarchical model (fit in Stan) estimates three parameters per entity, one for each shot type:
+The Shot Quality model is used to predict a baseline expected field goal percentage (xFG%) for each shot, which is then used as an input in a Bayesian hierarchical model (fit in Stan). This model estimates three parameters per entity, one for each shot type:
 
 - **Shooter skill** — does this player make shots more often than the difficulty baseline predicts?
-- **Individual defender impact** — does this defender suppress makes beyond what proximity alone would suggest?
+- **Individual defender impact** — does this defender suppress makes beyond what shot quality alone would suggest?
 - **Team defensive scheme** — after accounting for individual defenders, how much does the team's overall scheme matter?
 
 The model uses random effects to model these parameters, which means players with limited shot volume get pulled toward the league average rather than producing noisy extremes.
