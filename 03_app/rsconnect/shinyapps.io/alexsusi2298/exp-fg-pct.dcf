@@ -1,0 +1,13 @@
+name: exp-fg-pct
+title: Expected Field Goal Percentage App
+username: alexsusi2298
+account: alexsusi2298
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 17296130
+bundleId: 12235091
+url: https://alexsusi2298.shinyapps.io/exp-fg-pct/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: build_shots_summary_v5.R|raw_data/draws_mat.rds|raw_data/shots.csv|zz_Archive
