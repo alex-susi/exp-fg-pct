@@ -1261,12 +1261,12 @@ draw_court <- function(shot_x = NULL, shot_y = NULL, shot_family = NULL) {
              x = 6 * cos(seq(pi, 2*pi, length.out = 50)),
              y = 6 * sin(seq(pi, 2*pi, length.out = 50)) + 41.75,
              color = line_color, linewidth = line_size) +
-    coord_fixed(xlim = c(-26, 26), ylim = c(-6.5, 43)) +
+    coord_fixed(xlim = c(-25.15, 25.15), ylim = c(-5.35, 41.95), expand = FALSE) +
     theme_void() +
     theme(
       plot.background  = element_rect(fill = "#0f0f1a", color = NA),
       panel.background = element_rect(fill = "#0f0f1a", color = NA),
-      plot.margin      = margin(5, 5, 5, 5)
+      plot.margin      = margin(0, 0, 0, 0)
     )
   
   if (!is.null(shot_x) && !is.null(shot_y)) {
@@ -1294,6 +1294,12 @@ body {
   color: #d0d0d0;
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   overflow-x: hidden;
+}
+html, body, .bslib-page-navbar, .tab-content, .tab-pane {
+  max-height: 100dvh;
+}
+.tab-content, .tab-pane {
+  overflow: hidden !important;
 }
 
 .container-fluid, .bslib-page-fill, .bslib-page-navbar {
@@ -1589,17 +1595,197 @@ a:hover { color: #c4b5fd; }
 .app-title { font-size: 1.25rem; font-weight: 800; color: #f4f4f8; letter-spacing: -0.01em; }
 .app-subtitle { font-size: 0.78rem; color: #8f95a3; letter-spacing: 0.02em; }
 
+/* ---- Full-height app layouts ---- */
+.shot-explorer-layout {
+  display: flex;
+  gap: 20px;
+  padding: 8px 12px 4px 12px;
+  height: calc(100dvh - 86px);
+  min-height: 0;
+  overflow: hidden;
+}
+.shot-explorer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  height: 100%;
+  overflow: hidden;
+}
+.shot-left-col { flex: 5; }
+.shot-right-col { flex: 7; }
+.shot-top-card,
+.shot-feature-card {
+  flex: 0 0 258px;
+  min-height: 258px;
+  max-height: 258px;
+  overflow: hidden;
+}
+
+.shot-top-card .card-body,
+.shot-top-card .bslib-card-body,
+.shot-feature-card .card-body,
+.shot-feature-card .bslib-card-body {
+  overflow: hidden;
+}
+
+.shot-bottom-card {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+.shot-bottom-card > .card,
+.shot-bottom-card.bslib-card,
+.shot-bottom-card.card {
+  height: 100%;
+}
+.shot-bottom-card .card-body,
+.shot-bottom-card .bslib-card-body {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.court-plot-wrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+.court-plot-wrap .shiny-plot-output {
+  height: 100% !important;
+}
+.shot-info-line {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 4px 4px 0 4px;
+  text-align: center;
+  width: 100%;
+}
+.shot-results-body-wrap,
+.shot-results-body-wrap .shiny-html-output {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+.shot-results-content {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.shot-results-content .result-hero {
+  flex: 0 0 auto;
+  min-height: 176px;
+  padding: 14px 22px;
+  margin-bottom: 0;
+}
+.shot-results-content .hero-grid {
+  gap: 22px;
+}
+.shot-results-content .hero-stat {
+  min-height: 116px;
+}
+.shot-results-content .hero-stat .result-label {
+  font-size: 0.88rem !important;
+}
+.shot-results-content .hero-stat .result-value {
+  font-size: clamp(1.85rem, 2.75vw, 3.05rem) !important;
+}
+.shot-results-content .hero-stat .result-ci {
+  font-size: 0.86rem !important;
+}
+.shot-results-content .grade-circle {
+  width: 66px;
+  height: 66px;
+  font-size: 1.58rem;
+  border-width: 3px;
+}
+.shot-results-content .grade-number {
+  font-size: 1.22rem;
+  margin-top: 5px;
+}
+.shot-results-content .grade-sublabel {
+  font-size: 0.76rem;
+  margin-top: 2px;
+}
+.shot-results-content .actor-row {
+  padding: 6px 11px;
+  margin-bottom: 4px;
+}
+.shot-results-content .actor-name {
+  font-size: 0.74rem;
+}
+.shot-results-content .actor-effect {
+  font-size: 0.86rem;
+}
+.shot-results-content .actor-ci {
+  font-size: 0.64rem;
+}
+.shot-results-content .result-label[style*='margin-bottom'] {
+  margin-bottom: 5px !important;
+}
+.shot-results-content .effect-breakdown-wrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 0 !important;
+}
+@media (max-height: 820px) {
+  .shot-explorer-layout { height: calc(100dvh - 86px); min-height: 0; padding-top: 6px; padding-bottom: 4px; }
+  .shot-explorer-col { gap: 8px; }
+  .shot-top-card,
+  .shot-feature-card {
+    flex-basis: 238px;
+    min-height: 238px;
+    max-height: 238px;
+  }
+  .shot-results-content .result-hero {
+    min-height: 150px;
+    padding: 10px 18px;
+  }
+  .shot-results-content .hero-stat { min-height: 94px; }
+  .shot-results-content .hero-stat .result-label { font-size: 0.78rem !important; }
+  .shot-results-content .hero-stat .result-value {
+    font-size: clamp(1.55rem, 2.25vw, 2.55rem) !important;
+  }
+  .shot-results-content .hero-stat .result-ci { font-size: 0.74rem !important; }
+  .shot-results-content .grade-circle {
+    width: 50px;
+    height: 50px;
+    font-size: 1.28rem;
+    border-width: 3px;
+  }
+  .shot-results-content .grade-number { font-size: 1.02rem; margin-top: 4px; }
+  .shot-results-content .grade-sublabel { font-size: 0.66rem; }
+  .shot-results-content .actor-row { padding: 4px 9px; margin-bottom: 3px; }
+  .shot-results-content .actor-name { font-size: 0.68rem; }
+  .shot-results-content .actor-effect { font-size: 0.76rem; }
+  .shot-results-content .actor-ci { font-size: 0.58rem; }
+}
+
+
 /* ---- Shot-quality feature layout ---- */
 .shot-feature-card .card-body, .shot-feature-card .bslib-card-body {
   overflow-x: hidden;
+  overflow-y: hidden;
+  padding: 12px 18px !important;
 }
 .shot-feature-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  column-gap: 24px;
-  row-gap: 18px;
+  column-gap: 22px;
+  row-gap: 8px;
   width: 100%;
   max-width: 100%;
+  align-items: start;
 }
 .feature-cell { min-width: 0; max-width: 100%; }
 .feature-cell .shiny-input-container,
@@ -1607,6 +1793,15 @@ a:hover { color: #c4b5fd; }
 .feature-cell .form-group {
   width: 100% !important;
   max-width: 100% !important;
+  margin-bottom: 0 !important;
+}
+.shot-feature-card .irs {
+  margin-top: -2px;
+  margin-bottom: -4px;
+}
+.shot-feature-card .form-label,
+.shot-feature-card .control-label {
+  margin-bottom: 1px !important;
 }
 .toggle-grid {
   display: grid;
@@ -1685,9 +1880,49 @@ a:hover { color: #c4b5fd; }
   font-size: 0.74rem;
   line-height: 1.45;
 }
+.lb-tab-layout {
+  display: flex;
+  gap: 20px;
+  padding: 8px 12px 4px 12px;
+  height: calc(100dvh - 86px);
+  overflow: hidden;
+}
+.lb-controls-col,
+.lb-plot-col {
+  min-width: 0;
+  height: 100%;
+}
+.lb-controls-col { flex: 3; overflow: hidden; }
+.lb-plot-col { flex: 9; overflow: hidden; }
+.controls-fill-card,
+.controls-fill-card > .card,
+.controls-fill-card.bslib-card,
+.controls-fill-card.card {
+  height: 100%;
+}
+.controls-fill-card .card-body,
+.controls-fill-card .bslib-card-body {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.lb-plot-card,
+.lb-plot-card > .card,
+.lb-plot-card.bslib-card,
+.lb-plot-card.card {
+  height: 100%;
+}
+.lb-plot-card .card-body,
+.lb-plot-card .bslib-card-body {
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
 .lb-scroll-plot {
-  height: calc(100vh - 305px);
-  min-height: 500px;
+  height: calc(100% - 70px);
+  min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
   border-top: 1px solid #1a1a2a;
@@ -1709,8 +1944,8 @@ a:hover { color: #c4b5fd; }
 .scatter-tab-layout {
   display: flex;
   gap: 20px;
-  padding: 10px 12px 0 12px;
-  height: calc(100dvh - 96px);
+  padding: 8px 12px 4px 12px;
+  height: calc(100dvh - 86px);
   overflow: hidden;
 }
 .scatter-controls-col,
@@ -1718,8 +1953,18 @@ a:hover { color: #c4b5fd; }
   min-width: 0;
   height: 100%;
 }
-.scatter-controls-col { flex: 3; overflow-y: auto; overflow-x: hidden; }
+.scatter-controls-col { flex: 3; overflow: hidden; }
 .scatter-plot-col { flex: 9; overflow: hidden; }
+.scatter-controls-col .card,
+.scatter-controls-col .bslib-card {
+  height: 100%;
+}
+.scatter-controls-col .card-body,
+.scatter-controls-col .bslib-card-body {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
 .scatter-card,
 .scatter-card > .card,
 .scatter-card.bslib-card {
@@ -1744,6 +1989,318 @@ a:hover { color: #c4b5fd; }
   height: 100% !important;
 }
 .js-plotly-plot .hoverlayer { pointer-events: none; }
+
+
+/* ---- Responsive final viewport tuning ---- */
+.shot-explorer-layout {
+  height: calc(100dvh - 90px);
+  padding-top: 6px;
+  padding-bottom: 2px;
+}
+.shot-explorer-col {
+  gap: clamp(8px, 1.05dvh, 12px);
+}
+.shot-top-card,
+.shot-feature-card {
+  flex-basis: clamp(232px, 26dvh, 266px);
+  min-height: clamp(232px, 26dvh, 266px);
+  max-height: clamp(232px, 26dvh, 266px);
+}
+.shot-results-content .result-hero {
+  min-height: clamp(126px, 19dvh, 176px);
+  padding: clamp(8px, 1.35dvh, 14px) clamp(16px, 2.2vw, 22px);
+  margin-bottom: clamp(6px, 1.1dvh, 14px) !important;
+}
+.shot-results-content .hero-grid {
+  gap: clamp(14px, 2vw, 22px);
+}
+.shot-results-content .hero-stat {
+  min-height: clamp(82px, 13dvh, 116px);
+}
+.shot-results-content .hero-stat .result-label {
+  font-size: clamp(0.68rem, min(1.35dvh, 0.78vw), 0.88rem) !important;
+}
+.shot-results-content .hero-stat .result-value {
+  font-size: clamp(1.45rem, min(4.3dvh, 2.55vw), 3.05rem) !important;
+}
+.shot-results-content .hero-stat .result-ci {
+  font-size: clamp(0.66rem, min(1.18dvh, 0.75vw), 0.86rem) !important;
+}
+.shot-results-content .grade-circle {
+  width: clamp(46px, 7.2dvh, 66px);
+  height: clamp(46px, 7.2dvh, 66px);
+  font-size: clamp(1.10rem, 2.35dvh, 1.58rem);
+}
+.shot-results-content .grade-number {
+  font-size: clamp(0.90rem, 1.95dvh, 1.22rem);
+  margin-top: clamp(5px, 1dvh, 10px);
+}
+.shot-results-content .grade-sublabel {
+  font-size: clamp(0.58rem, 1.05dvh, 0.76rem);
+}
+.shot-results-content .effect-breakdown-wrap {
+  justify-content: center;
+  padding-top: clamp(4px, 0.9dvh, 12px);
+}
+.shot-results-content .result-label[style*='margin-bottom'] {
+  margin-bottom: clamp(4px, 0.7dvh, 8px) !important;
+}
+.shot-results-content .actor-row {
+  padding: clamp(4px, 0.72dvh, 6px) 11px;
+  margin-bottom: clamp(3px, 0.55dvh, 4px);
+}
+.shot-results-content .actor-name {
+  font-size: clamp(0.64rem, 1.05dvh, 0.74rem);
+}
+.shot-results-content .actor-effect {
+  font-size: clamp(0.72rem, 1.3dvh, 0.86rem);
+}
+.shot-results-content .actor-ci {
+  font-size: clamp(0.54rem, 0.95dvh, 0.64rem);
+}
+.controls-fill-card .selectize-dropdown-content {
+  max-height: min(220px, max(82px, calc(100dvh - 610px))) !important;
+  overflow-y: auto !important;
+}
+.controls-fill-card .selectize-dropdown {
+  max-height: min(232px, max(94px, calc(100dvh - 598px))) !important;
+  overflow: hidden !important;
+}
+@media (max-height: 820px) {
+  .shot-explorer-layout {
+    height: calc(100dvh - 88px);
+  }
+  .shot-top-card,
+  .shot-feature-card {
+    flex-basis: clamp(218px, 28dvh, 238px);
+    min-height: clamp(218px, 28dvh, 238px);
+    max-height: clamp(218px, 28dvh, 238px);
+  }
+  .shot-results-content .result-hero {
+    min-height: clamp(118px, 18.5dvh, 150px);
+  }
+}
+
+@media (max-height: 720px) {
+  .shot-explorer-layout {
+    height: calc(100dvh - 84px);
+    gap: 12px;
+  }
+  .shot-top-card,
+  .shot-feature-card {
+    flex-basis: 206px;
+    min-height: 206px;
+    max-height: 206px;
+  }
+  .shot-feature-card .card-body, .shot-feature-card .bslib-card-body {
+    padding: 8px 14px !important;
+  }
+}
+
+/* ---- v5 responsive spacing refinements ---- */
+.shot-feature-card .card-body,
+.shot-feature-card .bslib-card-body {
+  display: flex;
+  align-items: stretch;
+  padding: clamp(14px, 1.8dvh, 24px) 18px clamp(16px, 2.1dvh, 26px) 18px !important;
+}
+.shot-feature-grid {
+  height: 100%;
+  grid-template-rows: auto auto;
+  align-content: space-between;
+  row-gap: clamp(16px, 4.4dvh, 52px);
+}
+.shot-feature-card .form-label,
+.shot-feature-card .control-label {
+  margin-bottom: clamp(7px, 1.1dvh, 14px) !important;
+}
+.shot-feature-card .irs {
+  margin-top: clamp(4px, 0.85dvh, 9px);
+  margin-bottom: -2px;
+}
+.shot-feature-card .selectize-control,
+.shot-feature-card .form-select {
+  margin-top: 2px;
+}
+.court-plot-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 0;
+  padding: clamp(4px, 0.6dvh, 10px) clamp(8px, 1.1vw, 18px) 0 clamp(8px, 1.1vw, 18px);
+}
+.court-plot-wrap .shiny-plot-output {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 100%;
+}
+.shot-info-line {
+  flex: 0 0 clamp(44px, 7.2dvh, 76px);
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px !important;
+}
+.shot-court-card .card-body,
+.shot-court-card .bslib-card-body {
+  padding-bottom: clamp(6px, 0.9dvh, 12px) !important;
+}
+.controls-fill-card .selectize-dropdown-content {
+  max-height: min(340px, max(96px, calc(100dvh - 620px))) !important;
+  overflow-y: auto !important;
+}
+.controls-fill-card .selectize-dropdown {
+  max-height: min(352px, max(104px, calc(100dvh - 610px))) !important;
+  overflow: hidden !important;
+}
+
+/* ---- v6 layout corrections: compact features, larger court, no control-panel scroll on team dropdown ---- */
+.shot-feature-card .card-body,
+.shot-feature-card .bslib-card-body {
+  padding: clamp(8px, 1.05dvh, 14px) 18px clamp(7px, 0.95dvh, 12px) 18px !important;
+}
+.shot-feature-grid {
+  height: 100%;
+  grid-template-rows: minmax(0, 1fr) minmax(0, 1fr) !important;
+  align-content: stretch !important;
+  align-items: start !important;
+  row-gap: clamp(8px, 1.75dvh, 20px) !important;
+}
+.shot-feature-grid .feature-cell:nth-child(n+4) {
+  align-self: end !important;
+}
+.shot-feature-card .form-label,
+.shot-feature-card .control-label {
+  margin-bottom: clamp(4px, 0.65dvh, 8px) !important;
+}
+.shot-feature-card .irs {
+  margin-top: 0 !important;
+  margin-bottom: -4px !important;
+}
+.shot-feature-card .selectize-control,
+.shot-feature-card .form-select {
+  margin-top: 0 !important;
+}
+.shot-feature-card .feature-toggles {
+  padding-top: clamp(0px, 0.45dvh, 6px) !important;
+}
+.shot-feature-card .toggle-grid {
+  gap: clamp(4px, 0.7dvh, 8px) clamp(14px, 1.5vw, 22px) !important;
+}
+@media (max-height: 820px) {
+  .shot-feature-card .card-body,
+  .shot-feature-card .bslib-card-body {
+    padding-top: 7px !important;
+    padding-bottom: 6px !important;
+  }
+  .shot-feature-grid {
+    row-gap: 6px !important;
+  }
+  .shot-feature-card .form-label,
+  .shot-feature-card .control-label {
+    margin-bottom: 3px !important;
+  }
+  .shot-feature-card .feature-toggles {
+    padding-top: 0 !important;
+  }
+}
+.shot-court-card .card-body,
+.shot-court-card .bslib-card-body {
+  display: grid !important;
+  grid-template-rows: minmax(0, 1fr) clamp(36px, 5.6dvh, 58px) !important;
+  padding-bottom: clamp(4px, 0.65dvh, 8px) !important;
+}
+.court-plot-wrap {
+  min-height: 0 !important;
+  padding: clamp(1px, 0.25dvh, 4px) clamp(2px, 0.35vw, 8px) 0 clamp(2px, 0.35vw, 8px) !important;
+  align-items: stretch !important;
+  justify-content: center !important;
+}
+.court-plot-wrap .shiny-plot-output {
+  height: 100% !important;
+  width: 100% !important;
+}
+.shot-info-line {
+  height: 100% !important;
+  min-height: 0 !important;
+  flex: none !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 4px !important;
+  margin: 0 !important;
+}
+.controls-fill-card .card-body,
+.controls-fill-card .bslib-card-body,
+.scatter-controls-col .card-body,
+.scatter-controls-col .bslib-card-body {
+  overflow-y: hidden !important;
+  overflow-x: hidden !important;
+}
+.selectize-dropdown.epaa-team-dropdown,
+body > .selectize-dropdown {
+  z-index: 2147483647 !important;
+}
+
+/* ---- v7 court enlargement: use more of the shot-location card ---- */
+.shot-court-card .card-body,
+.shot-court-card .bslib-card-body {
+  grid-template-rows: minmax(0, 1fr) clamp(30px, 4.4dvh, 46px) !important;
+  padding-left: clamp(4px, 0.45vw, 8px) !important;
+  padding-right: clamp(4px, 0.45vw, 8px) !important;
+  padding-top: clamp(2px, 0.35dvh, 5px) !important;
+  padding-bottom: clamp(3px, 0.45dvh, 6px) !important;
+}
+.court-plot-wrap {
+  padding: 0 !important;
+  min-height: 0 !important;
+}
+.court-plot-wrap .shiny-plot-output,
+.court-plot-wrap .shiny-plot-output > div,
+.court-plot-wrap .shiny-plot-output img {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+}
+.court-plot-wrap .shiny-plot-output img {
+  object-fit: contain !important;
+  object-position: center center !important;
+  display: block !important;
+}
+.shot-info-line {
+  align-self: stretch !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.shot-info-prompt {
+  color: #7c8290 !important;
+  font-size: 0.88rem !important;
+  font-style: italic;
+  line-height: 1.1;
+  padding: 0 4px !important;
+}
+
+/* ---- v8 court vertical balance: center court between header and shot info ---- */
+.shot-court-card .card-body,
+.shot-court-card .bslib-card-body {
+  grid-template-rows: minmax(0, 1fr) clamp(28px, 4.1dvh, 42px) !important;
+}
+.court-plot-wrap {
+  overflow: visible !important;
+}
+.court-plot-wrap .shiny-plot-output {
+  transform: translateY(clamp(10px, 1.8dvh, 20px));
+  will-change: transform;
+}
+@media (max-height: 820px) {
+  .court-plot-wrap .shiny-plot-output {
+    transform: translateY(clamp(7px, 1.45dvh, 14px));
+  }
+}
+
+
+
 "
 
 app_theme <- bs_theme(
@@ -1770,7 +2327,74 @@ ui <- page_navbar(
   
   header = tagList(
     useShinyjs(),
-    tags$head(tags$style(HTML(app_css)))
+    tags$head(
+      tags$style(HTML(app_css)),
+      tags$script(HTML("
+(function() {
+  function bindDynamicTeamDropdowns() {
+    ['lb_team', 'sc_team'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (!el || !el.selectize) return;
+      var s = el.selectize;
+
+      function moveDropdownToBody() {
+        if (!s.$dropdown || !s.$dropdown[0]) return;
+        if (s.$dropdown[0].parentNode !== document.body) {
+          document.body.appendChild(s.$dropdown[0]);
+        }
+        s.settings.dropdownParent = 'body';
+        s.$dropdown[0].style.position = 'fixed';
+        s.$dropdown[0].style.zIndex = '2147483647';
+        s.$dropdown[0].classList.add('epaa-team-dropdown');
+      }
+
+      function resizeDropdown() {
+        if (!s.$control || !s.$control[0] || !s.$dropdown_content || !s.$dropdown_content[0]) return;
+        moveDropdownToBody();
+        var ctrl = s.$control[0];
+        var rect = ctrl.getBoundingClientRect();
+        var viewportBelow = Math.max(0, window.innerHeight - rect.bottom - 10);
+        var viewportAbove = Math.max(0, rect.top - 10);
+        var openAbove = viewportBelow < 118 && viewportAbove > viewportBelow;
+        var avail = openAbove ? viewportAbove : viewportBelow;
+        var opt = s.$dropdown_content[0].querySelector('.option');
+        var optionH = opt ? Math.max(30, Math.ceil(opt.getBoundingClientRect().height)) : 42;
+        var rows = Math.max(3, Math.floor((avail - 8) / optionH));
+        var viewportCap = window.innerHeight >= 980 ? 11 : (window.innerHeight >= 860 ? 9 : (window.innerHeight >= 760 ? 7 : 5));
+        rows = Math.max(3, Math.min(viewportCap, rows));
+        var contentH = Math.max(optionH * rows, 96);
+        s.$dropdown_content[0].style.maxHeight = contentH + 'px';
+        s.$dropdown_content[0].style.overflowY = 'auto';
+        if (s.$dropdown && s.$dropdown[0]) {
+          s.$dropdown[0].style.maxHeight = (contentH + 8) + 'px';
+          s.$dropdown[0].style.overflow = 'hidden';
+          s.$dropdown[0].style.left = rect.left + 'px';
+          s.$dropdown[0].style.width = rect.width + 'px';
+          s.$dropdown[0].style.top = openAbove ? Math.max(8, rect.top - contentH - 8) + 'px' : (rect.bottom + 4) + 'px';
+        }
+      }
+
+      if (s._epaaDynamicBound) {
+        if (s._epaaResizeTeamDropdown) s._epaaResizeTeamDropdown();
+        return;
+      }
+      moveDropdownToBody();
+      s._epaaResizeTeamDropdown = resizeDropdown;
+      s.on('dropdown_open', function(){ resizeDropdown(); setTimeout(resizeDropdown, 35); });
+      s.on('type', resizeDropdown);
+      s.on('focus', resizeDropdown);
+      s.on('change', resizeDropdown);
+      s._epaaDynamicBound = true;
+    });
+  }
+
+  document.addEventListener('shiny:bound', function(){ setTimeout(bindDynamicTeamDropdowns, 75); });
+  document.addEventListener('shiny:value', function(){ setTimeout(bindDynamicTeamDropdowns, 75); });
+  window.addEventListener('resize', function(){ setTimeout(bindDynamicTeamDropdowns, 75); });
+  setTimeout(bindDynamicTeamDropdowns, 250);
+})();
+"))
+    )
   ),
   
   theme = app_theme,
@@ -1785,7 +2409,7 @@ ui <- page_navbar(
     div(class = "about-page",
       div(class = "about-hero",
         tags$h2("Expected Points Above Average"),
-        tags$p("This dashboard explores EPAA, a two-stage framework for separating shot difficulty from shot-making talent. First, the app estimates how hard a shot is based on its location and context. Then it layers in Bayesian player, defender, and team effects to estimate who adds or prevents expected points relative to that baseline."),
+        tags$p("This dashboard explores EPAA, a two-stage framework for separating shot quality from shot-making talent. First, the app estimates how hard a shot is based on its location and context. Then it layers in Bayesian player, defender, and team random effects to estimate who adds or prevents expected points relative to that baseline."),
         tags$p(
           "Full project details and source code are available in the ",
           tags$a(
@@ -1801,11 +2425,11 @@ ui <- page_navbar(
         col_widths = c(6, 6),
         card(class = "about-card",
           card_header("Shot Quality"),
-          tags$p("Shot quality is the expected value of a shot before crediting the shooter or penalizing the defender. It is estimated from public NBA shot-tracking features such as location, shot clock, defender distance, dribbles, transition context, second-chance status, and player minutes. The Shot Explorer lets you manually set those inputs and inspect the model's baseline expected field-goal percentage for that exact context.")
+          tags$p("Shot quality is the expected value of a shot before crediting the shooter or penalizing the defender. It is estimated from public NBA play-by-play features such as location, shot clock, defender distance, dribbles taken before shooting, and player minutes. The Shot Explorer lets you manually set those inputs and inspect the model's baseline expected field-goal percentage for that exact context.")
         ),
         card(class = "about-card",
           card_header("Shooting Talent and Defensive Impact"),
-          tags$p("EPAA measures how much expected value a player adds above the context baseline. Offensive players receive positive credit when their estimated make probability is better than an average shooter facing the same shot mix. Individual defenders and team defenses receive positive credit when they suppress expected points relative to the same baseline.")
+          tags$p("EPAA measures how much expected value a player adds above the baseline shot quality. Offensive players receive positive credit when their estimated make probability is better than an average shooter facing the same shot mix. Individual defenders and team defenses receive positive credit when they suppress expected points relative to the same baseline.")
         )
       ),
       layout_columns(
@@ -1813,12 +2437,12 @@ ui <- page_navbar(
         card(class = "about-card",
           card_header("Glossary"),
           div(class = "about-glossary",
-            div(tags$span(class = "about-term", "EPAA"), div(class = "about-def", "Expected Points Above Average; expected points added or prevented relative to a context-adjusted baseline.")),
-            div(tags$span(class = "about-term", "Shot Quality"), div(class = "about-def", "The expected points of a shot using only context, before player, defender, or team effects.")),
-            div(tags$span(class = "about-term", "xFG%"), div(class = "about-def", "Expected field-goal percentage for a league-average shooter on the selected shot context.")),
-            div(tags$span(class = "about-term", "xPts"), div(class = "about-def", "Expected points: estimated make probability multiplied by the shot value.")),
-            div(tags$span(class = "about-term", "Credible Interval"), div(class = "about-def", "A posterior uncertainty range from the Bayesian model, not a frequentist confidence interval.")),
-            div(tags$span(class = "about-term", "EPAA per 100"), div(class = "about-def", "Rate version of EPAA, useful for comparing players with different shot volumes.")),
+            div(tags$span(class = "about-term", "Expected Points Above Average (EPAA)"), div(class = "about-def", "Expected points added or prevented relative to a league-average player given the shot quality.")),
+            div(tags$span(class = "about-term", "Shot Quality"), div(class = "about-def", "The expected points of a shot for a league-average player. Does not consider who took or who defended the shot.")),
+            div(tags$span(class = "about-term", "xFG%"), div(class = "about-def", "Expected field goal percentage for a league-average shooter given the shot quality.")),
+            div(tags$span(class = "about-term", "xPts"), div(class = "about-def", "Expected points: xFG% multiplied by the number of points scored for the given shot if made.")),
+            div(tags$span(class = "about-term", "Credible Interval"), div(class = "about-def", "A posterior uncertainty range from the Bayesian model.")),
+            div(tags$span(class = "about-term", "EPAA per 100"), div(class = "about-def", "Normalizes EPAA on a per-100 shot basis, useful for comparing players with different shot volumes.")),
             div(tags$span(class = "about-term", "Total EPAA"), div(class = "about-def", "Volume-weighted EPAA over the observed attempts or shots defended.")),
             div(tags$span(class = "about-term", "Team Defense"), div(class = "about-def", "A team-level defensive effect that captures scheme and context not assigned to a single defender."))
           )
@@ -1826,9 +2450,9 @@ ui <- page_navbar(
         card(class = "about-card",
           card_header("Where to Start"),
           div(class = "about-start",
-            div(tags$span(class = "about-term", "Shot Explorer"), div(class = "about-def", "Click a shot location, choose context features, and inspect the baseline and posterior-adjusted shot result.")),
+            div(tags$span(class = "about-term", "Shot Explorer"), div(class = "about-def", "Chose a shooter, defender, shot location, and shot features to inspect the baseline and player-adjusted shot quality.")),
             div(tags$span(class = "about-term", "EPAA Leaderboard"), div(class = "about-def", "Rank offensive players, defensive players, or team defenses by total EPAA or EPAA per 100.")),
-            div(tags$span(class = "about-term", "EPAA Scatterplot"), div(class = "about-def", "Compare shot quality against estimated talent. Player points use headshots; team-defense points use logos."))
+            div(tags$span(class = "about-term", "EPAA Scatterplot"), div(class = "about-def", "View shot quality against estimated talent."))
           )
         )
       )
@@ -1842,13 +2466,13 @@ ui <- page_navbar(
     title = "Shot Explorer",
     icon = icon("crosshairs"),
 
-  div(style = "display: flex; gap: 20px; padding: 10px 12px 0 12px;",
+  div(class = "shot-explorer-layout",
     
     # ── LEFT: Players + Court (5/12) ─────────────────────────────────────
-    div(style = "flex: 5; display: flex; flex-direction: column; gap: 12px; min-width: 0;",
+    div(class = "shot-explorer-col shot-left-col",
       
       # Player selection (above court)
-      card(
+      card(class = "shot-top-card shot-players-card",
         card_header("Players & Team"),
         card_body(
           layout_columns(
@@ -1886,21 +2510,23 @@ ui <- page_navbar(
       ),
       
       # Court (fills remaining left-column space)
-      card(style = "flex: 1;",
+      card(class = "shot-bottom-card shot-court-card",
         card_header("Click to Set Shot Location"),
         card_body(
-          plotOutput("court_plot", click = "court_click",
-                     height = "520px", width = "100%"),
+          div(class = "court-plot-wrap",
+            plotOutput("court_plot", click = "court_click",
+                       height = "100%", width = "100%")
+          ),
           uiOutput("shot_info_ui")
         )
       )
     ),
     
     # ── RIGHT: Context + Results (7/12) ──────────────────────────────────
-    div(style = "flex: 7; display: flex; flex-direction: column; gap: 12px; min-width: 0;",
+    div(class = "shot-explorer-col shot-right-col",
       
       # Context features
-      card(class = "shot-feature-card",
+      card(class = "shot-feature-card shot-top-card",
         card_header("Shot Quality Features"),
         card_body(
           div(class = "shot-feature-grid",
@@ -1939,10 +2565,11 @@ ui <- page_navbar(
       ),
       
       # Results (fills remaining right-column space)
-      card(style = "flex: 1;",
+      card(class = "shot-bottom-card shot-results-card",
         card_header("EPAA Prediction with 90% Credible Intervals"),
         card_body(
-          uiOutput("results_ui")
+          div(class = "shot-results-body-wrap",
+              uiOutput("results_ui"))
         )
       )
     )
@@ -1956,11 +2583,11 @@ ui <- page_navbar(
     title = "EPAA Leaderboard",
     icon = icon("ranking-star"),
 
-    div(style = "display: flex; gap: 20px; padding: 10px 12px 0 12px;",
+    div(class = "lb-tab-layout",
       
       # ── LEFT: Controls (3/12) ──────────────────────────────────────────
-      div(style = "flex: 3; min-width: 0;",
-        card(
+      div(class = "lb-controls-col",
+        card(class = "controls-fill-card",
           card_header("Leaderboard Controls"),
           card_body(
             selectInput("lb_role", "Show Leaderboard For",
@@ -1971,9 +2598,9 @@ ui <- page_navbar(
             
             selectInput("lb_shot", "Shot Type",
                         choices = c("All Shots"        = "all",
-                                    "3-Pointers Only"  = "j3",
-                                    "Mid-Range Only"   = "j2",
-                                    "Rim Attempts Only" = "rim"),
+                                    "3-Pt"  = "j3",
+                                    "Mid-Range"   = "j2",
+                                    "Rim" = "rim"),
                         selected = "all"),
             
             selectInput("lb_xaxis", "X-Axis Metric",
@@ -2007,9 +2634,10 @@ ui <- page_navbar(
                                       "750"  = "750",
                                       "1000" = "1000"),
                           selected = "0"),
-              selectInput("lb_team", "Team",
+              selectizeInput("lb_team", "Team",
                           choices = c("All Teams" = "all"),
-                          selected = "all")
+                          selected = "all",
+                          options = list(dropdownParent = "body"))
             ),
             
             div(class = "lb-help",
@@ -2019,8 +2647,8 @@ ui <- page_navbar(
       ),
       
       # ── RIGHT: Caterpillar plot (9/12) ─────────────────────────────────
-      div(style = "flex: 9; min-width: 0;",
-        card(style = "flex: 1;",
+      div(class = "lb-plot-col",
+        card(class = "lb-plot-card",
           card_header(textOutput("lb_title", inline = TRUE)),
           card_body(
             uiOutput("lb_plot_ui")
@@ -2038,7 +2666,7 @@ ui <- page_navbar(
     icon = icon("chart-area"),
     div(class = "scatter-tab-layout",
       div(class = "scatter-controls-col",
-        card(
+        card(class = "controls-fill-card",
           card_header("Scatterplot Controls"),
           card_body(
             selectInput("sc_role", "Show Scatterplot For",
@@ -2048,9 +2676,9 @@ ui <- page_navbar(
                         selected = "offense"),
             selectInput("sc_shot", "Shot Type",
                         choices = c("All Shots"         = "all",
-                                    "3-Pointers Only"   = "j3",
-                                    "Mid-Range Only"    = "j2",
-                                    "Rim Attempts Only" = "rim"),
+                                    "3-Pt"   = "j3",
+                                    "Mid-Range"    = "j2",
+                                    "Rim" = "rim"),
                         selected = "all"),
             selectInput("sc_xaxis", "X-Axis Metric",
                         choices = c("Total EPAA"         = "total",
@@ -2068,9 +2696,10 @@ ui <- page_navbar(
                                       "750"  = "750",
                                       "1000" = "1000"),
                           selected = "200"),
-              selectInput("sc_team", "Team",
+              selectizeInput("sc_team", "Team",
                           choices = c("All Teams" = "all"),
-                          selected = "all")
+                          selected = "all",
+                          options = list(dropdownParent = "body"))
             ),
             div(class = "lb-help",
                 uiOutput("sc_help_text"))
@@ -2111,7 +2740,7 @@ server <- function(input, output, session) {
     }
     current_team <- isolate(input$sc_team %||% "all")
     selected_team <- if (current_team %in% c("all", teams)) current_team else "all"
-    updateSelectInput(session, "sc_team",
+    updateSelectizeInput(session, "sc_team",
                       choices = c("All Teams" = "all", stats::setNames(teams, teams)),
                       selected = selected_team)
   })
@@ -2128,7 +2757,7 @@ server <- function(input, output, session) {
     }
     current_team <- isolate(input$lb_team %||% "all")
     selected_team <- if (current_team %in% c("all", teams)) current_team else "all"
-    updateSelectInput(session, "lb_team",
+    updateSelectizeInput(session, "lb_team",
                       choices = c("All Teams" = "all", stats::setNames(teams, teams)),
                       selected = selected_team)
   })
@@ -2230,14 +2859,14 @@ server <- function(input, output, session) {
   # ── Shot info display ──────────────────────────────────────────────────
   output$shot_info_ui <- renderUI({
     if (is.null(shot_loc$x)) {
-      return(div(class = "prompt-text", "Click anywhere on the court above"))
+      return(div(class = "shot-info-line shot-info-prompt", "Click anywhere on the court above"))
     }
     
     badge_class <- paste("shot-badge", shot_loc$family)
     family_label <- switch(shot_loc$family,
                            rim = "Rim", j2 = "Mid-Range", j3 = "Three-Pointer")
     
-    div(style = "display: flex; align-items: center; gap: 16px; padding: 8px 4px;",
+    div(class = "shot-info-line",
       span(class = badge_class, family_label),
       span(style = "color: #a9adba; font-size: 0.88rem;",
            sprintf("%.1f ft  |  %.0f\u00B0 from center", 
@@ -2531,7 +3160,7 @@ server <- function(input, output, session) {
     }
     
     # Assemble full results
-    tagList(
+    div(class = "shot-results-content",
       # Hero section: xFG%, xPts, Shot Grade
       div(class = "result-section result-hero",
           style = "border: 1px solid #6d28d9; background: #11111f;",
@@ -2574,7 +3203,7 @@ server <- function(input, output, session) {
       ),
       
       # Actor breakdown
-      div(style = "margin-top: 12px;",
+      div(class = "effect-breakdown-wrap",
         div(class = "result-label", style = "margin-bottom: 8px; padding-left: 4px;",
             "Effect Breakdown"),
         tagList(actor_rows)
@@ -2934,11 +3563,11 @@ server <- function(input, output, session) {
     )
   })
 
-  output$sc_note_text <- renderUI({
-    metric <- input$sc_xaxis %||% "per100"
-    x_text <- if (metric == "total") "total EPAA" else "EPAA per 100 shots"
-    div(sprintf("X-axis shows %s. Y-axis shows average context-based expected points per shot. Positive values on the x-axis indicate added offensive value or prevented defensive value, depending on the selected role.", x_text))
-  })
+  # output$sc_note_text <- renderUI({
+  #   metric <- input$sc_xaxis %||% "per100"
+  #   x_text <- if (metric == "total") "total EPAA" else "EPAA per 100 shots"
+  #   div(sprintf("X-axis shows %s. Y-axis shows average context-based expected points per shot. Positive values on the x-axis indicate added offensive value or prevented defensive value, depending on the selected role.", x_text))
+  # })
   
   output$scatter_plot <- renderPlotly({
     df <- scatter_data()
