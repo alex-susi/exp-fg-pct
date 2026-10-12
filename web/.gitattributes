@@ -1,0 +1,2 @@
+# Model and posterior-draw files are raw bytes: never normalize line endings.
+*.bin binary

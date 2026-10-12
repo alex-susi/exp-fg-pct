@@ -5,7 +5,7 @@ account: alexsusi2298
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 17296130
-bundleId: 12235091
+bundleId: 12239760
 url: https://alexsusi2298.shinyapps.io/exp-fg-pct/
 version: 1
 asMultiple: FALSE
