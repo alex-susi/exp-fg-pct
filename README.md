@@ -25,7 +25,7 @@ The result is a set of estimates for:
 * **Individual defender impact**
 * **Team defensive scheme quality**
 
-The **[Interactive Dashboard](https://alexsusi2298.shinyapps.io/exp-fg-pct/)** lets users explore shot quality, shooting talent, defender effects, and model outputs across NBA players and teams.
+The **[Interactive Dashboard](https://alex-susi.github.io/exp-fg-pct/)** lets users explore shot quality, shooting talent, defender effects, and model outputs across NBA players and teams.
 
 > This is an independent research / portfolio project and is not an official NBA, team, or league model. Data were collected from public NBA Stats API endpoints via the `hoopR` R package for the 2024–25 NBA regular season.
 
